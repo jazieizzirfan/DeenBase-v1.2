@@ -1,5 +1,4 @@
 // app/quran/page.js
-export const runtime = 'edge';
 import { getSurahs } from '../../lib/api';
 import QuranListClient from '../../components/QuranListClient';
 

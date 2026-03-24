@@ -1,3 +1,4 @@
+export const runtime = 'edge';
 import { NextResponse } from 'next/server';
 import {
   fetchWaktuSolatByZone,
@@ -8,11 +9,11 @@ import {
 
 export async function GET(request) {
   const { searchParams } = new URL(request.url);
-  const zone    = searchParams.get('zone');
-  const city    = searchParams.get('city');
+  const zone = searchParams.get('zone');
+  const city = searchParams.get('city');
   const country = searchParams.get('country');
-  const lat     = searchParams.get('lat');
-  const lng     = searchParams.get('lng');
+  const lat = searchParams.get('lat');
+  const lng = searchParams.get('lng');
 
   try {
     let data;

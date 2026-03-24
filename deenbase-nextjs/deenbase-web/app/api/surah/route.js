@@ -1,4 +1,5 @@
 // app/api/surah/route.js
+export const runtime = 'edge';
 import { NextResponse } from 'next/server';
 import { getSurah } from '../../../lib/api';
 

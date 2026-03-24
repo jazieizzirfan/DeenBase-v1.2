@@ -1,3 +1,4 @@
+export const runtime = 'edge';
 import { getSurah } from '../../../lib/api';
 import ReaderClient from '../../../components/ReaderClient';
 
@@ -14,6 +15,6 @@ export default async function SurahPage({ params, searchParams }) {
   const num = +params.surah;
   const lang = searchParams?.lang || 'en';
   let data = null;
-  try { data = await getSurah(num, lang); } catch {}
+  try { data = await getSurah(num, lang); } catch { }
   return <ReaderClient surahNum={num} data={data} initialLang={lang} />;
 }

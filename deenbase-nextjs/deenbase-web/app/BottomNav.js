@@ -1,5 +1,5 @@
 'use client';
-import Link from 'next/link';
+import { useLang, useTheme } from './Shell';
 import { usePathname } from 'next/navigation';
 
 export default function BottomNav() {

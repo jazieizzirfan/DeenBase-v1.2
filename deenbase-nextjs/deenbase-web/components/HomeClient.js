@@ -5,18 +5,19 @@ import { useLang, useTheme } from './Shell';
 import { SALAH } from '../data/constants';
 
 const QUICK = [
-  { href:'/quran',  icon:'ph-book-open-text',   title:'Al-Quran',    sub:'114 Surahs · EN/BM' },
-  { href:'/prayer', icon:'ph-clock-clockwise',   title:'Prayer Times', sub:'Adzan · JAKIM' },
-  { href:'/qibla',  icon:'ph-compass',           title:'Qibla',        sub:'Live compass' },
-  { href:'/zikir',  icon:'ph-hands-praying',     title:'Zikir & Dua',  sub:'Morning · Evening' },
-  { href:'/names',  icon:'ph-star-four',          title:'99 Names',     sub:'Asmaul Husna' },
-  { href:'/quotes', icon:'ph-quotes',             title:'Quran Quotes', sub:'Comfort · Trust · Mercy' },
+  { href: '/quran', icon: 'ph-book-open-text', title: 'Al-Quran', sub: '114 Surahs · EN/BM' },
+  { href: '/prayer', icon: 'ph-clock-clockwise', title: 'Prayer Times', sub: 'Adzan · JAKIM' },
+  { href: '/qibla', icon: 'ph-compass', title: 'Qibla', sub: 'Live compass' },
+  { href: '/zikir', icon: 'ph-hands-praying', title: 'Zikir & Dua', sub: 'Morning · Evening' },
+  { href: '/names', icon: 'ph-star-four', title: '99 Names', sub: 'Asmaul Husna' },
+  { href: '/quotes', icon: 'ph-quotes', title: 'Quran Quotes', sub: 'Comfort · Trust · Mercy' },
 ];
 
-const PRAYER_ICON = { Fajr:'ph-sun-horizon', Dhuhr:'ph-sun', Asr:'ph-cloud-sun', Maghrib:'ph-clouds-sun', Isha:'ph-moon-stars' };
+const PRAYER_ICON = { Fajr: 'ph-sun-horizon', Dhuhr: 'ph-sun', Asr: 'ph-cloud-sun', Maghrib: 'ph-clouds-sun', Isha: 'ph-moon-stars' };
 
 export default function HomeClient({ prayerData, hijri, nextPrayer: initialNext }) {
-  const { lang } = useLang();
+  const { lang, setLang } = useLang();
+  const { dark, setDark } = useTheme();
   const [nextPrayer, setNextPrayer] = useState(initialNext);
   const [countdown, setCountdown] = useState('');
   const [bm, setBm] = useState([]);
@@ -37,7 +38,7 @@ export default function HomeClient({ prayerData, hijri, nextPrayer: initialNext 
         bm: bookmarks.length,
         zikr: Object.values(counters).reduce((a, b) => a + b, 0),
       });
-    } catch {}
+    } catch { }
   }, []);
 
   // Live countdown
@@ -52,7 +53,7 @@ export default function HomeClient({ prayerData, hijri, nextPrayer: initialNext 
         const [h, m] = t.split(':').map(Number);
         if (h * 60 + m > cur) { next = { name: n, time: t, mins: h * 60 + m }; break; }
       }
-      if (!next) { const t = prayerData.timings.Fajr || '05:00'; const [h,m]=t.split(':').map(Number); next={name:'Fajr',time:t,mins:h*60+m}; }
+      if (!next) { const t = prayerData.timings.Fajr || '05:00'; const [h, m] = t.split(':').map(Number); next = { name: 'Fajr', time: t, mins: h * 60 + m }; }
       setNextPrayer(next);
       let diff = next.mins - cur; if (diff <= 0) diff += 1440;
       const h = Math.floor(diff / 60), m = diff % 60;
@@ -67,12 +68,21 @@ export default function HomeClient({ prayerData, hijri, nextPrayer: initialNext 
     <div className="page-body">
 
       {/* Bismillah */}
-      <div className="bismillah-hero">
-        <div className="arabic accent" style={{ fontSize: 27, marginBottom: 6 }}>
-          بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيمِ
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
+        <div style={{ fontFamily: 'Cormorant Garamond, serif', fontSize: 26, fontWeight: 700, color: 'var(--acc)' }}>
+          DeenBase
         </div>
-        <div style={{ fontSize: 11, color: 'var(--muted)', fontStyle: 'italic' }}>
-          In the name of Allah, the Most Gracious, the Most Merciful
+        <div style={{ display: 'flex', gap: 12 }}>
+          <button
+            onClick={() => setLang(lang === 'en' ? 'ms' : 'en')}
+            style={{ width: 38, height: 38, borderRadius: 10, background: 'var(--surf)', border: '1px solid var(--brd)', color: 'var(--acc)', fontSize: 12, fontWeight: 600, cursor: 'pointer' }}>
+            {lang === 'en' ? 'EN' : 'BM'}
+          </button>
+          <button
+            onClick={() => setDark(!dark)}
+            style={{ width: 38, height: 38, borderRadius: 10, background: 'var(--surf)', border: '1px solid var(--brd)', color: 'var(--muted)', fontSize: 18, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <i className={`ph ${dark ? 'ph-sun' : 'ph-moon'}`}></i>
+          </button>
         </div>
       </div>
 

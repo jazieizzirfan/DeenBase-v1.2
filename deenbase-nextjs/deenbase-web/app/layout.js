@@ -45,7 +45,8 @@ export default function RootLayout({ children }) {
           }}
         />
       </head>
-      <body>
+      <body
+        style={{ maxWidth: '480px', margin: '0 auto', minHeight: '100vh', borderLeft: '1px solid var(--brd)', borderRight: '1px solid var(--brd)' }}>
         {children}
       </body>
     </html>

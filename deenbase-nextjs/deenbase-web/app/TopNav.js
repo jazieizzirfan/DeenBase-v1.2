@@ -5,18 +5,13 @@ import { usePathname, useRouter } from 'next/navigation';
 export default function TopNav() {
     const { lang, setLang } = useLang();
     const { dark, setDark } = useTheme();
-
-    // These Next.js hooks let us read the URL and navigate history
     const pathname = usePathname();
     const router = useRouter();
 
-    // Define the main root tabs where we DO NOT want a back button
     const isMainTab = ['/', '/quran', '/prayer', '/zikir', '/qibla', '/more'].includes(pathname);
 
     return (
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '20px 15px 10px 15px' }}>
-
-            {/* Left Side: Back Button (if needed) + Title */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                 {!isMainTab && (
                     <button
@@ -31,7 +26,6 @@ export default function TopNav() {
                 </div>
             </div>
 
-            {/* Right Side: Toggles */}
             <div style={{ display: 'flex', gap: 12 }}>
                 <button
                     onClick={() => setLang(lang === 'en' ? 'ms' : 'en')}
@@ -44,7 +38,6 @@ export default function TopNav() {
                     <i className={`ph ${dark ? 'ph-sun' : 'ph-moon'}`}></i>
                 </button>
             </div>
-
         </div>
     );
 }

@@ -46,6 +46,11 @@ export default function BottomNav() {
                 Qibla
             </Link>
 
+            <Link href="/more" style={{ color: isActive('/more') ? 'var(--acc)' : 'var(--muted)', textDecoration: 'none', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', fontSize: '11px', fontWeight: 600 }}>
+                <i className={isActive('/more') ? "ph-fill ph-list" : "ph ph-list"} style={{ fontSize: '24px' }}></i>
+                More
+            </Link>
+
         </nav>
     );
 }

@@ -1,6 +1,6 @@
 'use client';
-import { useLang, useTheme } from './Shell';
 import { usePathname, useRouter } from 'next/navigation';
+import { useLang, useTheme } from './Shell';
 
 export default function TopNav() {
     const { lang, setLang } = useLang();

@@ -1,6 +1,6 @@
 'use client';
 import { useState, useEffect, useRef } from 'react';
-import { useToast } from '../app/Shell';
+import { useToast } from '../app/AppShell';
 import { SALAH, PRAYER_ICONS } from '../data/constants';
 import { ZONE_LIST } from '../lib/waktusolat';
 

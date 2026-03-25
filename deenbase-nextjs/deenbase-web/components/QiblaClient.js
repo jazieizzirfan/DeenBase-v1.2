@@ -1,6 +1,6 @@
 'use client';
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { useToast } from '../app/Shell';
+import { useToast } from '../app/AppShell';
 
 // ─── Haversine qibla (always works, offline) ─────────────────────
 function calcQibla(lat, lng) {

@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import { useLang, useToast } from '../app/Shell';
+import { useLang, useToast } from '../app/AppShell';
 import { QUOTES } from '../data/constants';
 
 export default function QuotesClient() {

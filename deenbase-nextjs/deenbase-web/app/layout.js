@@ -1,7 +1,7 @@
 import './globals.css';
 import TopNav from './TopNav';
 import BottomNav from './BottomNav';
-import Shell from './Shell';
+import Shell from './AppShell';
 
 export const metadata = {
   title: 'DeenBase – Islamic Reference',

@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { useLang, useTheme } from './Shell';
+import { useLang, useTheme } from '../app/AppShell';
 import { SALAH } from '../data/constants';
 
 const QUICK = [

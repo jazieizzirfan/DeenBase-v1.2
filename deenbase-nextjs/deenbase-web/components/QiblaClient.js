@@ -1,6 +1,6 @@
 'use client';
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { useToast } from './Shell';
+import { useToast } from '../app/AppShell';
 
 // ─── Haversine qibla (always works, offline) ─────────────────────
 function calcQibla(lat, lng) {
@@ -15,18 +15,18 @@ function calcQibla(lat, lng) {
 export default function QiblaClient() {
   const toast = useToast();
   const [qiblaDir, setQiblaDir] = useState(null);      // bearing to Mecca (0-360)
-  const [heading, setHeading]   = useState(0);          // device compass heading
-  const [coords, setCoords]     = useState(null);
-  const [status, setStatus]     = useState('Tap to start compass');
-  const [error, setError]       = useState('');
-  const [aligned, setAligned]   = useState(false);
+  const [heading, setHeading] = useState(0);          // device compass heading
+  const [coords, setCoords] = useState(null);
+  const [status, setStatus] = useState('Tap to start compass');
+  const [error, setError] = useState('');
+  const [aligned, setAligned] = useState(false);
   const [compassActive, setCompassActive] = useState(false);
-  const [city, setCity]         = useState('');
+  const [city, setCity] = useState('');
 
-  const headingRef  = useRef(0);
+  const headingRef = useRef(0);
   const qiblaDirRef = useRef(null);
-  const animFrame   = useRef(null);
-  const needleRef   = useRef(null);
+  const animFrame = useRef(null);
+  const needleRef = useRef(null);
 
   // Update needle rotation via RAF for smooth animation
   const updateNeedle = useCallback(() => {
@@ -72,7 +72,7 @@ export default function QiblaClient() {
           .then(d => {
             if (d.direction) { setQiblaDir(d.direction); qiblaDirRef.current = d.direction; }
           })
-          .catch(() => {});
+          .catch(() => { });
       },
       (err) => {
         setStatus('Location denied. Search city below.');
@@ -180,7 +180,7 @@ export default function QiblaClient() {
       setStatus(`${dir.toFixed(1)}° from North · ${data[0].display_name.split(',')[0]}`);
       setError('');
       // Verify with API
-      fetch(`/api/qibla?lat=${la}&lng=${lo}`).then(r=>r.json()).then(d=>{if(d.direction){setQiblaDir(d.direction);qiblaDirRef.current=d.direction;}}).catch(()=>{});
+      fetch(`/api/qibla?lat=${la}&lng=${lo}`).then(r => r.json()).then(d => { if (d.direction) { setQiblaDir(d.direction); qiblaDirRef.current = d.direction; } }).catch(() => { });
     } catch { setError('Network error.'); }
   }
 
@@ -193,9 +193,9 @@ export default function QiblaClient() {
       <div className="page-header"><h1>Qibla Direction</h1></div>
       <div className="page-body">
 
-        <div className="card" style={{textAlign:'center',marginBottom:12}}>
+        <div className="card" style={{ textAlign: 'center', marginBottom: 12 }}>
           {/* Instruction */}
-          <div style={{fontSize:11,color:'var(--muted)',marginBottom:4,lineHeight:1.5}}>
+          <div style={{ fontSize: 11, color: 'var(--muted)', marginBottom: 4, lineHeight: 1.5 }}>
             {compassActive
               ? 'Rotate phone until the gold needle points upward'
               : 'Tap the compass to activate the live sensor'}
@@ -205,56 +205,56 @@ export default function QiblaClient() {
           <div
             onClick={requestCompass}
             style={{
-              width:RING, height:RING, borderRadius:'50%',
-              border:'2px solid var(--brd2)',
-              background:'radial-gradient(circle at 35% 35%,var(--surf2),var(--surf3))',
-              position:'relative', display:'flex', alignItems:'center', justifyContent:'center',
-              margin:'14px auto 12px', cursor:'pointer', userSelect:'none',
-              boxShadow:`0 0 0 10px var(--acc4),inset 0 0 30px rgba(0,0,0,.3)${compassActive?',0 0 20px rgba(196,164,74,.15)':''}`,
-              transition:'box-shadow .3s',
+              width: RING, height: RING, borderRadius: '50%',
+              border: '2px solid var(--brd2)',
+              background: 'radial-gradient(circle at 35% 35%,var(--surf2),var(--surf3))',
+              position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center',
+              margin: '14px auto 12px', cursor: 'pointer', userSelect: 'none',
+              boxShadow: `0 0 0 10px var(--acc4),inset 0 0 30px rgba(0,0,0,.3)${compassActive ? ',0 0 20px rgba(196,164,74,.15)' : ''}`,
+              transition: 'box-shadow .3s',
             }}
           >
             {/* Cardinal labels */}
-            {[['N',{top:10}],['S',{bottom:10}],['E',{right:14}],['W',{left:14}]].map(([l,s])=>(
-              <span key={l} style={{position:'absolute',fontSize:'9.5px',color:'var(--muted)',fontWeight:700,...s}}>{l}</span>
+            {[['N', { top: 10 }], ['S', { bottom: 10 }], ['E', { right: 14 }], ['W', { left: 14 }]].map(([l, s]) => (
+              <span key={l} style={{ position: 'absolute', fontSize: '9.5px', color: 'var(--muted)', fontWeight: 700, ...s }}>{l}</span>
             ))}
 
             {/* Kaaba */}
-            <span style={{position:'absolute',fontSize:22,zIndex:3,pointerEvents:'none'}}>🕋</span>
+            <span style={{ position: 'absolute', fontSize: 22, zIndex: 3, pointerEvents: 'none' }}>🕋</span>
 
             {/* Needle wrapper — rotates to point at Qibla */}
             <div
               ref={needleRef}
               style={{
-                position:'absolute', width:'100%', height:'100%',
-                transition:'none', // we animate via RAF, not CSS transition
+                position: 'absolute', width: '100%', height: '100%',
+                transition: 'none', // we animate via RAF, not CSS transition
               }}
             >
               {/* Gold needle — points to Qibla */}
               <div style={{
-                width:4, height:80, position:'absolute', top:30, left:'50%',
-                transform:'translateX(-50%)', borderRadius:3,
-                background:aligned
+                width: 4, height: 80, position: 'absolute', top: 30, left: '50%',
+                transform: 'translateX(-50%)', borderRadius: 3,
+                background: aligned
                   ? 'linear-gradient(to bottom,#3D8B5E,rgba(61,139,94,.2))'
                   : 'linear-gradient(to bottom,var(--acc),rgba(196,164,74,.2))',
-                boxShadow:aligned?'0 0 12px rgba(61,139,94,.5)':'0 0 10px rgba(196,164,74,.3)',
-                transition:'background .3s, box-shadow .3s',
-              }}/>
+                boxShadow: aligned ? '0 0 12px rgba(61,139,94,.5)' : '0 0 10px rgba(196,164,74,.3)',
+                transition: 'background .3s, box-shadow .3s',
+              }} />
               {/* Red tail */}
-              <div style={{width:4,height:45,position:'absolute',bottom:30,left:'50%',transform:'translateX(-50%)',borderRadius:3,background:'rgba(184,80,80,.5)'}}/>
+              <div style={{ width: 4, height: 45, position: 'absolute', bottom: 30, left: '50%', transform: 'translateX(-50%)', borderRadius: 3, background: 'rgba(184,80,80,.5)' }} />
               {/* Center dot */}
               <div style={{
-                position:'absolute',width:12,height:12,background:aligned?'var(--green)':'var(--acc)',
-                borderRadius:'50%',top:'50%',left:'50%',transform:'translate(-50%,-50%)',
-                boxShadow:aligned?'0 0 8px rgba(61,139,94,.6)':'0 0 8px rgba(196,164,74,.5)',
-                zIndex:2, transition:'background .3s',
-              }}/>
+                position: 'absolute', width: 12, height: 12, background: aligned ? 'var(--green)' : 'var(--acc)',
+                borderRadius: '50%', top: '50%', left: '50%', transform: 'translate(-50%,-50%)',
+                boxShadow: aligned ? '0 0 8px rgba(61,139,94,.6)' : '0 0 8px rgba(196,164,74,.5)',
+                zIndex: 2, transition: 'background .3s',
+              }} />
             </div>
 
             {/* Activate overlay when not active */}
             {!compassActive && (
-              <div style={{position:'absolute',inset:0,display:'flex',alignItems:'center',justifyContent:'center',borderRadius:'50%',background:'rgba(0,0,0,.15)',zIndex:4}}>
-                <div style={{background:'var(--acc)',borderRadius:20,padding:'6px 14px',fontSize:11,fontWeight:600,color:'#080D0A',display:'flex',alignItems:'center',gap:5}}>
+              <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '50%', background: 'rgba(0,0,0,.15)', zIndex: 4 }}>
+                <div style={{ background: 'var(--acc)', borderRadius: 20, padding: '6px 14px', fontSize: 11, fontWeight: 600, color: '#080D0A', display: 'flex', alignItems: 'center', gap: 5 }}>
                   <i className="ph ph-cursor-click"></i> Tap to start
                 </div>
               </div>
@@ -262,27 +262,27 @@ export default function QiblaClient() {
           </div>
 
           {/* Direction display */}
-          <div style={{fontFamily:'Cormorant Garamond,serif',fontSize:32,fontWeight:700,color:aligned?'var(--green)':'var(--acc)',transition:'color .3s'}}>
+          <div style={{ fontFamily: 'Cormorant Garamond,serif', fontSize: 32, fontWeight: 700, color: aligned ? 'var(--green)' : 'var(--acc)', transition: 'color .3s' }}>
             {qiblaDir !== null ? `${qiblaDir.toFixed(1)}°` : '—°'}
           </div>
 
           {/* Aligned badge */}
           {aligned && (
-            <div style={{display:'inline-flex',alignItems:'center',gap:6,background:'rgba(61,139,94,.12)',border:'1px solid rgba(61,139,94,.3)',borderRadius:20,padding:'5px 14px',margin:'8px 0'}}>
-              <i className="ph ph-check-circle" style={{color:'var(--green)'}}></i>
-              <span style={{color:'var(--green)',fontSize:12,fontWeight:600}}>Facing Mecca!</span>
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, background: 'rgba(61,139,94,.12)', border: '1px solid rgba(61,139,94,.3)', borderRadius: 20, padding: '5px 14px', margin: '8px 0' }}>
+              <i className="ph ph-check-circle" style={{ color: 'var(--green)' }}></i>
+              <span style={{ color: 'var(--green)', fontSize: 12, fontWeight: 600 }}>Facing Mecca!</span>
             </div>
           )}
 
-          <div style={{fontSize:11.5,color:'var(--muted)',marginTop:4,lineHeight:1.5}}>{status}</div>
+          <div style={{ fontSize: 11.5, color: 'var(--muted)', marginTop: 4, lineHeight: 1.5 }}>{status}</div>
           {coords && (
-            <div style={{fontSize:10,color:'var(--muted)',marginTop:4,display:'flex',alignItems:'center',justifyContent:'center',gap:4}}>
-              <i className="ph ph-map-pin" style={{fontSize:11}}></i>
+            <div style={{ fontSize: 10, color: 'var(--muted)', marginTop: 4, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 4 }}>
+              <i className="ph ph-map-pin" style={{ fontSize: 11 }}></i>
               {coords.lat.toFixed(4)}, {coords.lng.toFixed(4)}
             </div>
           )}
           {compassActive && (
-            <div style={{fontSize:10,color:'var(--muted)',marginTop:4}}>
+            <div style={{ fontSize: 10, color: 'var(--muted)', marginTop: 4 }}>
               Device heading: {heading}°
             </div>
           )}
@@ -291,15 +291,15 @@ export default function QiblaClient() {
         {error && <div className="err-box"><i className="ph ph-warning"></i> {error}</div>}
 
         {/* City search */}
-        <div className="card2" style={{marginBottom:10}}>
-          <div style={{fontSize:10.5,color:'var(--muted)',marginBottom:7,display:'flex',alignItems:'center',gap:5}}>
+        <div className="card2" style={{ marginBottom: 10 }}>
+          <div style={{ fontSize: 10.5, color: 'var(--muted)', marginBottom: 7, display: 'flex', alignItems: 'center', gap: 5 }}>
             <i className="ph ph-magnifying-glass"></i> Search city (if GPS is unavailable)
           </div>
-          <div style={{display:'flex',gap:6}}>
+          <div style={{ display: 'flex', gap: 6 }}>
             <input
-              className="inp" style={{flex:1}} value={city}
-              onChange={e=>setCity(e.target.value)}
-              onKeyDown={e=>e.key==='Enter'&&searchCity()}
+              className="inp" style={{ flex: 1 }} value={city}
+              onChange={e => setCity(e.target.value)}
+              onKeyDown={e => e.key === 'Enter' && searchCity()}
               placeholder="City name (e.g. Kuala Lumpur)"
             />
             <button className="btn primary" onClick={searchCity}>Get</button>
@@ -307,23 +307,23 @@ export default function QiblaClient() {
         </div>
 
         {/* Calibration tips */}
-        <div className="info-box" style={{flexDirection:'column',gap:6}}>
-          <div style={{display:'flex',gap:7,alignItems:'flex-start'}}>
-            <i className="ph ph-device-mobile-camera" style={{color:'var(--acc)',flexShrink:0,marginTop:1}}></i>
+        <div className="info-box" style={{ flexDirection: 'column', gap: 6 }}>
+          <div style={{ display: 'flex', gap: 7, alignItems: 'flex-start' }}>
+            <i className="ph ph-device-mobile-camera" style={{ color: 'var(--acc)', flexShrink: 0, marginTop: 1 }}></i>
             <div>
               <strong>Calibrate:</strong> Move phone in figure-8 pattern for 5 seconds before using.
             </div>
           </div>
-          <div style={{display:'flex',gap:7,alignItems:'flex-start'}}>
-            <i className="ph ph-warning" style={{color:'var(--acc)',flexShrink:0,marginTop:1}}></i>
+          <div style={{ display: 'flex', gap: 7, alignItems: 'flex-start' }}>
+            <i className="ph ph-warning" style={{ color: 'var(--acc)', flexShrink: 0, marginTop: 1 }}></i>
             <div>Keep away from metal objects, magnets, and electronics. Hold phone flat and level.</div>
           </div>
-          <div style={{display:'flex',gap:7,alignItems:'flex-start'}}>
-            <i className="ph ph-apple-logo" style={{color:'var(--acc)',flexShrink:0,marginTop:1}}></i>
+          <div style={{ display: 'flex', gap: 7, alignItems: 'flex-start' }}>
+            <i className="ph ph-apple-logo" style={{ color: 'var(--acc)', flexShrink: 0, marginTop: 1 }}></i>
             <div><strong>iOS:</strong> Tap compass once — Safari will ask for motion permission.</div>
           </div>
-          <div style={{display:'flex',gap:7,alignItems:'flex-start'}}>
-            <i className="ph ph-android-logo" style={{color:'var(--acc)',flexShrink:0,marginTop:1}}></i>
+          <div style={{ display: 'flex', gap: 7, alignItems: 'flex-start' }}>
+            <i className="ph ph-android-logo" style={{ color: 'var(--acc)', flexShrink: 0, marginTop: 1 }}></i>
             <div><strong>Android:</strong> Compass activates automatically after tap.</div>
           </div>
         </div>

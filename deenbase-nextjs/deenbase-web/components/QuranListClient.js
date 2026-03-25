@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { useLang } from './AppShell';
+import { useLang } from '../app/AppShell';
 import { JUZ_MAP } from '../data/constants';
 
 const FILTERS = ['All', 'Meccan', 'Medinan', 'Completed'];

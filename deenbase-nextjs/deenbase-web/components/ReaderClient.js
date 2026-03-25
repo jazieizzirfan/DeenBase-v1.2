@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
-import { useLang, useToast } from './Shell';
+import { useLang, useToast } from '../app/AppShell';
 import { audioUrl } from '../lib/api';
 
 export default function ReaderClient({ surahNum, data: initialData, initialLang }) {
@@ -28,12 +28,12 @@ export default function ReaderClient({ surahNum, data: initialData, initialLang 
       setCompleted(JSON.parse(localStorage.getItem('db-completed') || '[]'));
       const sz = localStorage.getItem('db-arabicsize');
       if (sz) setArabicSize(+sz);
-    } catch {}
+    } catch { }
     // Save last read
     try {
       localStorage.setItem('db-lastread', String(surahNum));
       localStorage.setItem('db-lastayah', '1');
-    } catch {}
+    } catch { }
   }, [surahNum]);
 
   // Reload if lang changes
@@ -75,7 +75,7 @@ export default function ReaderClient({ surahNum, data: initialData, initialLang 
 
   const shareAyah = async (arText, trText, s, a) => {
     const text = `${arText}\n\n${trText}\n\n— Quran ${s}:${a}`;
-    if (navigator.share) { try { await navigator.share({ title: `Quran ${s}:${a}`, text }); return; } catch {} }
+    if (navigator.share) { try { await navigator.share({ title: `Quran ${s}:${a}`, text }); return; } catch { } }
     copyAyah(arText, trText, s, a);
   };
 
@@ -120,7 +120,7 @@ export default function ReaderClient({ surahNum, data: initialData, initialLang 
   const chSize = (d) => {
     const next = Math.min(3.5, Math.max(1.2, +(arabicSize + d).toFixed(1)));
     setArabicSize(next);
-    try { localStorage.setItem('db-arabicsize', String(next)); } catch {}
+    try { localStorage.setItem('db-arabicsize', String(next)); } catch { }
   };
 
   const ar = data?.arabic;

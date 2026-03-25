@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { useToast } from '../app/AppShell';
+import { useToast } from '../app/Shell';
 import { AZKAR } from '../data/constants';
 
 const TABS = [

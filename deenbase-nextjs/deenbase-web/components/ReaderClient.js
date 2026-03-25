@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
-import { useLang, useToast } from '../app/AppShell';
+import { useLang, useToast } from '../app/Shell';
 import { audioUrl } from '../lib/api';
 
 export default function ReaderClient({ surahNum, data: initialData, initialLang }) {

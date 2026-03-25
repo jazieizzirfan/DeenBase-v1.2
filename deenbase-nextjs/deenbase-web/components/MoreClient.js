@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { useLang, useTheme, useToast } from '../app/AppShell';
+import { useLang, useTheme, useToast } from '../app/Shell';
 export default function MoreClient() {
   const { lang, setLang } = useLang();
   const { dark, toggle: toggleTheme } = useTheme();

@@ -3,8 +3,10 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useLang, useTheme } from './AppShell';
 
 export default function TopNav() {
-    const { lang, setLang } = useLang();
-    const { dark, setDark } = useTheme();
+    // Grab the toggle functions from AppShell
+    const { lang, toggle: toggleLang } = useLang();
+    const { dark, toggle: toggleTheme } = useTheme();
+
     const pathname = usePathname();
     const router = useRouter();
 
@@ -28,12 +30,12 @@ export default function TopNav() {
 
             <div style={{ display: 'flex', gap: 12 }}>
                 <button
-                    onClick={() => setLang(lang === 'en' ? 'ms' : 'en')}
+                    onClick={toggleLang}
                     style={{ width: 38, height: 38, borderRadius: 10, background: 'var(--surf)', border: '1px solid var(--brd)', color: 'var(--acc)', fontSize: 12, fontWeight: 600, cursor: 'pointer' }}>
                     {lang === 'en' ? 'EN' : 'BM'}
                 </button>
                 <button
-                    onClick={() => setDark(!dark)}
+                    onClick={toggleTheme}
                     style={{ width: 38, height: 38, borderRadius: 10, background: 'var(--surf)', border: '1px solid var(--brd)', color: 'var(--muted)', fontSize: 18, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <i className={`ph ${dark ? 'ph-sun' : 'ph-moon'}`}></i>
                 </button>

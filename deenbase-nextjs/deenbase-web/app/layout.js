@@ -49,9 +49,15 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body
-        style={{ maxWidth: '480px', margin: '0 auto', minHeight: '100vh', borderLeft: '1px solid var(--brd)', borderRight: '1px solid var(--brd)' }}>
-        {children}
-        <BottomNav />
+        style={{ maxWidth: '480px', margin: '0 auto', minHeight: '100vh', borderLeft: '1px solid var(--brd)', borderRight: '1px solid var(--brd)', position: 'relative', paddingBottom: '80px' }}>
+
+        {/* The Shell wraps the app to provide Dark Mode & Language memory */}
+        <Shell>
+          <TopNav />
+          {children}
+          <BottomNav />
+        </Shell>
+
       </body>
     </html>
   );

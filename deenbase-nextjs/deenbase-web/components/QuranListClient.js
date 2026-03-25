@@ -1,10 +1,10 @@
 'use client';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { useLang } from './Shell';
+import { useLang } from './AppShell';
 import { JUZ_MAP } from '../data/constants';
 
-const FILTERS = ['All','Meccan','Medinan','Completed'];
+const FILTERS = ['All', 'Meccan', 'Medinan', 'Completed'];
 
 export default function QuranListClient({ surahs }) {
   const { lang, toggle: toggleLang } = useLang();
@@ -19,7 +19,7 @@ export default function QuranListClient({ surahs }) {
       setCompleted(JSON.parse(localStorage.getItem('db-completed') || '[]'));
       const lr = localStorage.getItem('db-lastread');
       if (lr) setLastRead(+lr);
-    } catch {}
+    } catch { }
   }, []);
 
   const filtered = surahs.filter(s => {
